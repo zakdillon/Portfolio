@@ -34,7 +34,7 @@ class ViewController: UIViewController {
 	}
 	
 	/// Affords us the ability to use UICollectionViewDiffableDataSource and a compositional layout
-	var dataSource: UICollectionViewDiffableDataSource<Section, [Movie]>! = nil
+	var dataSource: UICollectionViewDiffableDataSource<Section, Movie>! = nil
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -70,7 +70,7 @@ class ViewController: UIViewController {
 		guard let collectionView = collectionView else { return }
 		
 		// Configure the datasource for the collection view
-		dataSource = UICollectionViewDiffableDataSource<Section, [Movie]>(collectionView: collectionView, cellProvider: { (collectionView, indexPath, movies: [Movie]) -> UICollectionViewCell? in
+		dataSource = UICollectionViewDiffableDataSource<Section, Movie>(collectionView: collectionView, cellProvider: { (collectionView, indexPath, movie: Movie) -> UICollectionViewCell? in
 			
 			// What section are we look at?
 			let section = Section.allCases[indexPath.section]
@@ -80,24 +80,28 @@ class ViewController: UIViewController {
 					// Create the cell
 					let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FeaturedCell.reuseIdentifier, for: indexPath) as? FeaturedCell
 					
-					// Grab a reference to the movie
-					let movie = movies[indexPath.item]
-
-					// TODO: Set up the cell
+					// Fetch the image
+					if let url = URL(string: movie.artworkUrl100), cell != nil {
+						self.fetchImage(at: url, for: cell!)
+					}
 					
+					// Set up the label
+					cell?.titleLabel?.text = movie.name
 
 					// Return the Cell
 					return cell
 				default:
 					// Create the cell
 					let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MovieCell.reuseIdentifier, for: indexPath) as? MovieCell
-					
-					// Grab a reference to the movie
-					let movie = movies[indexPath.item]
-					
-					// TODO: Set up the cell
+										
+					// Set up the text labels
 					cell?.titleLabel?.text = movie.name
 					cell?.artistLabel?.text = movie.artistName
+					
+					// Fetch the image
+					if let url = URL(string: movie.artworkUrl100), cell != nil {
+						self.fetchImage(at: url, for: cell!)
+					}
 					
 					// Return the cell
 					return cell
@@ -137,43 +141,57 @@ class ViewController: UIViewController {
 		let snapshot = snapshotForCurrentState()
 		dataSource.apply(snapshot, animatingDifferences: false)
 	}
+	
+	/// Fetches the image and sets it on the cell.
+	fileprivate func fetchImage(at url: URL, for cell: ImageCell) {
+		URLSession.shared.dataTask(with: url) { [cell] (data, response, error) in
+			// Make sure we didnt get an error
+			guard error == nil else { return }
+			
+			// Make sure we got data back
+			guard let imageData = data else { return }
+			
+			// Turn that data into an image
+			cell.image = UIImage(data: imageData)
+		}.resume()
+	}
 
 	/// Creates a snapshot to be applied to the UIDiffableDataSource
-	fileprivate func snapshotForCurrentState() -> NSDiffableDataSourceSnapshot<Section, [Movie]> {
+	fileprivate func snapshotForCurrentState() -> NSDiffableDataSourceSnapshot<Section, Movie> {
 		// Create the snapshot
-		var snapshot = NSDiffableDataSourceSnapshot<Section, [Movie]>()
+		var snapshot = NSDiffableDataSourceSnapshot<Section, Movie>()
 		
 		// Append sections...
 		
 		snapshot.appendSections([Section.featured])
-		snapshot.appendItems([service.featured])
+		snapshot.appendItems(service.featured)
 		
 		snapshot.appendSections([Section.popular])
-		snapshot.appendItems([service.popular])
+		snapshot.appendItems(service.popular)
 		
 		snapshot.appendSections([Section.new])
-		snapshot.appendItems([service.new])
+		snapshot.appendItems(service.new)
 
 		snapshot.appendSections([Section.group1])
-		snapshot.appendItems([service.group1])
+		snapshot.appendItems(service.group1)
 
 		snapshot.appendSections([Section.group2])
-		snapshot.appendItems([service.group2])
+		snapshot.appendItems(service.group2)
 		
 		snapshot.appendSections([Section.group3])
-		snapshot.appendItems([service.group3])
+		snapshot.appendItems(service.group3)
 		
 		snapshot.appendSections([Section.group4])
-		snapshot.appendItems([service.group4])
+		snapshot.appendItems(service.group4)
 		
 		snapshot.appendSections([Section.group5])
-		snapshot.appendItems([service.group5])
+		snapshot.appendItems(service.group5)
 		
 		snapshot.appendSections([Section.group6])
-		snapshot.appendItems([service.group6])
+		snapshot.appendItems(service.group6)
 		
 		snapshot.appendSections([Section.group7])
-		snapshot.appendItems([service.group7])
+		snapshot.appendItems(service.group7)
 		
 		// Return the snapshot
 		return snapshot
@@ -200,17 +218,15 @@ class ViewController: UIViewController {
 	/// Creates a featured Layout section
 	func generateFeaturedSectionLayout() -> NSCollectionLayoutSection {
 		let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-											  heightDimension: .fractionalWidth(2/3))
+											  heightDimension: .fractionalHeight(1.0))
 		let item = NSCollectionLayoutItem(layoutSize: itemSize)
-		
+
 		// Show one item plus a small peek of the next item
-		let groupFractionalWidth: CGFloat = 0.95
-		let groupFractionalHeight: CGFloat = 2/3
-		let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(groupFractionalWidth),
-											   heightDimension: .fractionalWidth(groupFractionalHeight))
+		let groupSize = NSCollectionLayoutSize(widthDimension: .absolute(200),
+											   heightDimension: .absolute(150))
 		
 		let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 1)
-		group.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
+		group.edgeSpacing = NSCollectionLayoutEdgeSpacing(leading: .fixed(20), top: .fixed(8), trailing: .fixed(0), bottom: .fixed(8))
 
 		// Create and set up the header
 
@@ -224,41 +240,40 @@ class ViewController: UIViewController {
 		
 		let section = NSCollectionLayoutSection(group: group)
 		section.boundarySupplementaryItems = [sectionHeader]
-		section.orthogonalScrollingBehavior = .groupPaging
-		
+		section.orthogonalScrollingBehavior = .continuous
+
 		return section
 	}
 	
 	// Generates
 	func generateMovieSectionLayout() -> NSCollectionLayoutSection {
+		// Create the item
 		let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-											  heightDimension: .fractionalWidth(2/3))
+											  heightDimension: .fractionalHeight(1.0))
 		let item = NSCollectionLayoutItem(layoutSize: itemSize)
 		
-		// Show one item plus peek on narrow screens, two items plus peek on wider screens
-		let groupFractionalWidth: CGFloat = 0.95
-		let groupFractionalHeight: CGFloat = 2/3
+		// Add the item ot a group
 		let groupSize = NSCollectionLayoutSize(
-			widthDimension: .fractionalWidth(groupFractionalWidth),
-			heightDimension: .fractionalWidth(groupFractionalHeight))
+			widthDimension: .absolute(133),
+			heightDimension: .estimated(248))
 		let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 1)
-		group.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
 		
 		// Set up the header
 		
 		let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-												heightDimension: .estimated(50))
+												heightDimension: .absolute(50))
 		let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
 			layoutSize: headerSize,
 			elementKind: SectionHeader.reuseIdentifier, alignment: .top)
 		
+		// Add the group and header to a section
 		let section = NSCollectionLayoutSection(group: group)
 		section.boundarySupplementaryItems = [sectionHeader]
-		section.orthogonalScrollingBehavior = .groupPaging
+		section.orthogonalScrollingBehavior = .continuous
+		section.interGroupSpacing = 20.0
+		section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20)
 		
+		// Return the section
 		return section
 	}
-
-
 }
-

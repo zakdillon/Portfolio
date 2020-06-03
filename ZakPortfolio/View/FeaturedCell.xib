@@ -19,17 +19,45 @@
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="comingSoon" translatesAutoresizingMaskIntoConstraints="NO" id="Lhf-cU-nfN">
                         <rect key="frame" x="0.0" y="0.0" width="203" height="128"/>
                     </imageView>
+                    <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a3M-gp-EKo">
+                        <rect key="frame" x="0.0" y="0.0" width="203" height="128"/>
+                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="L8h-0P-Q8e">
+                            <rect key="frame" x="0.0" y="0.0" width="203" height="128"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NYb-TC-e5Q">
+                                    <rect key="frame" x="8" y="8" width="187" height="112"/>
+                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                    <color key="shadowColor" systemColor="quaternaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.17999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
+                                </label>
+                            </subviews>
+                            <constraints>
+                                <constraint firstItem="NYb-TC-e5Q" firstAttribute="leading" secondItem="L8h-0P-Q8e" secondAttribute="leading" constant="8" id="Ehs-IC-Kcb"/>
+                                <constraint firstItem="NYb-TC-e5Q" firstAttribute="top" secondItem="L8h-0P-Q8e" secondAttribute="top" constant="8" id="YfN-el-cel"/>
+                                <constraint firstAttribute="bottom" secondItem="NYb-TC-e5Q" secondAttribute="bottom" constant="8" id="p0U-U5-Fpa"/>
+                                <constraint firstAttribute="trailing" secondItem="NYb-TC-e5Q" secondAttribute="trailing" constant="8" id="rPL-Ii-8X9"/>
+                            </constraints>
+                        </view>
+                        <blurEffect style="regular"/>
+                    </visualEffectView>
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="bottom" secondItem="Lhf-cU-nfN" secondAttribute="bottom" id="0HB-0g-wMK"/>
+                    <constraint firstAttribute="bottom" secondItem="a3M-gp-EKo" secondAttribute="bottom" id="4fP-c0-049"/>
                     <constraint firstItem="Lhf-cU-nfN" firstAttribute="leading" secondItem="eo7-bD-0Ub" secondAttribute="leading" id="Ahr-cd-CEg"/>
                     <constraint firstItem="Lhf-cU-nfN" firstAttribute="top" secondItem="eo7-bD-0Ub" secondAttribute="top" id="KvM-pA-KGW"/>
+                    <constraint firstAttribute="trailing" secondItem="a3M-gp-EKo" secondAttribute="trailing" id="M15-3T-PhQ"/>
                     <constraint firstAttribute="trailing" secondItem="Lhf-cU-nfN" secondAttribute="trailing" id="PxX-vL-et4"/>
+                    <constraint firstItem="a3M-gp-EKo" firstAttribute="top" secondItem="eo7-bD-0Ub" secondAttribute="top" id="Rf1-1t-b3y"/>
+                    <constraint firstItem="a3M-gp-EKo" firstAttribute="leading" secondItem="eo7-bD-0Ub" secondAttribute="leading" id="dF6-ng-TtS"/>
                 </constraints>
             </collectionViewCellContentView>
             <size key="customSize" width="203" height="128"/>
             <connections>
                 <outlet property="imageView" destination="Lhf-cU-nfN" id="UvD-Cj-hee"/>
+                <outlet property="titleLabel" destination="NYb-TC-e5Q" id="zDl-NB-A4f"/>
             </connections>
             <point key="canvasLocation" x="138" y="153"/>
         </collectionViewCell>
