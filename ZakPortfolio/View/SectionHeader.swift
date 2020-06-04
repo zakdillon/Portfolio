@@ -8,6 +8,7 @@
 
 import UIKit
 
+/// A generic section header
 class SectionHeader: UICollectionReusableView {
 	static let reuseIdentifier = "SectionHeader"	
 	@IBOutlet weak var label: UILabel?

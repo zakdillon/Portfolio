@@ -11,6 +11,7 @@ import UIKit
 /// The Root View Controller of the application.
 class ViewController: UIViewController {
 
+	/// The collectionView will display all the information we gather from the ws.
 	var collectionView: UICollectionView?
 
 	/// The service that fetches all data for the view
@@ -27,10 +28,6 @@ class ViewController: UIViewController {
 		case group1 = "Group 1"
 		case group2 = "Group 2"
 		case group3 = "Group 3"
-		case group4 = "Group 4"
-		case group5 = "Group 5"
-		case group6 = "Group 6"
-		case group7 = "Group 7"
 	}
 	
 	/// Affords us the ability to use UICollectionViewDiffableDataSource and a compositional layout
@@ -38,13 +35,13 @@ class ViewController: UIViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-				
+
 		// Set up the collection view.
 		collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: generateLayout())
 		view.addSubview(collectionView!)
 		collectionView?.autoresizingMask = [.flexibleHeight, .flexibleWidth]
 		collectionView?.backgroundColor = .systemBackground
-		
+
 		// Register for cells
 		collectionView?.register(UINib(nibName: FeaturedCell.reuseIdentifier, bundle: nil), forCellWithReuseIdentifier: FeaturedCell.reuseIdentifier)
 		collectionView?.register(UINib(nibName: MovieCell.reuseIdentifier, bundle: nil), forCellWithReuseIdentifier: MovieCell.reuseIdentifier)
@@ -57,12 +54,11 @@ class ViewController: UIViewController {
 		configureDataSource()
 		
 		// Fetch the data
-		service.loadData {
+		service.loadData { (success) in
 			let snapshot = self.snapshotForCurrentState()
 			self.dataSource.apply(snapshot, animatingDifferences: true)
 		}
 	}
-	
 	
 	/// Sets up the diffable data source
 	func configureDataSource() {
@@ -102,12 +98,13 @@ class ViewController: UIViewController {
 					if let url = URL(string: movie.artworkUrl100), cell != nil {
 						self.fetchImage(at: url, for: cell!)
 					}
-					
+
 					// Return the cell
 					return cell
 			}
 		})
 		
+		// Configure the supplementary view provider for the datasource.
 		dataSource.supplementaryViewProvider = {
 			(collectionView: UICollectionView, kind: String, indexPath: IndexPath) -> UICollectionReusableView? in
 			
@@ -118,8 +115,6 @@ class ViewController: UIViewController {
 				case .featured:
 					// Get the header
 					let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: FeaturedSectionHeader.reuseIdentifier, for: indexPath) as? FeaturedSectionHeader
-				
-					// TODO: configure header
 					
 					// Return it
 					return header
@@ -134,7 +129,6 @@ class ViewController: UIViewController {
 					// Return it
 					return header
 			}
-
 		}
 		
 		// Create and apply the snapshot
@@ -181,18 +175,6 @@ class ViewController: UIViewController {
 		snapshot.appendSections([Section.group3])
 		snapshot.appendItems(service.group3)
 		
-		snapshot.appendSections([Section.group4])
-		snapshot.appendItems(service.group4)
-		
-		snapshot.appendSections([Section.group5])
-		snapshot.appendItems(service.group5)
-		
-		snapshot.appendSections([Section.group6])
-		snapshot.appendItems(service.group6)
-		
-		snapshot.appendSections([Section.group7])
-		snapshot.appendItems(service.group7)
-		
 		// Return the snapshot
 		return snapshot
 	}
@@ -218,7 +200,7 @@ class ViewController: UIViewController {
 	/// Creates a featured Layout section
 	func generateFeaturedSectionLayout() -> NSCollectionLayoutSection {
 		let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-											  heightDimension: .fractionalHeight(1.0))
+											  heightDimension: .fractionalHeight(0.9))
 		let item = NSCollectionLayoutItem(layoutSize: itemSize)
 
 		// Show one item plus a small peek of the next item
@@ -226,13 +208,15 @@ class ViewController: UIViewController {
 											   heightDimension: .absolute(150))
 		
 		let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 1)
-		group.edgeSpacing = NSCollectionLayoutEdgeSpacing(leading: .fixed(20), top: .fixed(8), trailing: .fixed(0), bottom: .fixed(8))
+		group.edgeSpacing = NSCollectionLayoutEdgeSpacing(leading: .fixed(20), top: .fixed(20), trailing: .fixed(0), bottom: .fixed(8))
 
+		//
 		// Create and set up the header
-
+		//
+		
 		// The header should be 1/4 the vertical size of the view, and go all the way across.
 		let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-												heightDimension: .fractionalHeight(1/4))
+												heightDimension: .fractionalHeight(0.25))
 		
 		let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
 			layoutSize: headerSize,
@@ -240,7 +224,7 @@ class ViewController: UIViewController {
 		
 		let section = NSCollectionLayoutSection(group: group)
 		section.boundarySupplementaryItems = [sectionHeader]
-		section.orthogonalScrollingBehavior = .continuous
+		section.orthogonalScrollingBehavior = .groupPaging
 
 		return section
 	}
@@ -258,7 +242,9 @@ class ViewController: UIViewController {
 			heightDimension: .estimated(248))
 		let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 1)
 		
+		//
 		// Set up the header
+		//
 		
 		let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
 												heightDimension: .absolute(50))
@@ -269,6 +255,8 @@ class ViewController: UIViewController {
 		// Add the group and header to a section
 		let section = NSCollectionLayoutSection(group: group)
 		section.boundarySupplementaryItems = [sectionHeader]
+		
+		// Set up the sectcion to display how we want.
 		section.orthogonalScrollingBehavior = .continuous
 		section.interGroupSpacing = 20.0
 		section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20)

@@ -16,15 +16,27 @@
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="generic_header" translatesAutoresizingMaskIntoConstraints="NO" id="QB8-7f-b1c">
                     <rect key="frame" x="0.0" y="0.0" width="414" height="138"/>
                 </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="iTunes Movies" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vws-AB-WVB">
+                    <rect key="frame" x="131.5" y="45" width="262.5" height="48"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="40"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <constraints>
                 <constraint firstItem="QB8-7f-b1c" firstAttribute="leading" secondItem="cNT-O1-mO2" secondAttribute="leading" id="3s2-jS-ilE"/>
+                <constraint firstItem="Vws-AB-WVB" firstAttribute="centerY" secondItem="cNT-O1-mO2" secondAttribute="centerY" id="5kh-yo-5nM"/>
                 <constraint firstAttribute="trailing" secondItem="QB8-7f-b1c" secondAttribute="trailing" id="6Pu-xP-hcb"/>
                 <constraint firstItem="QB8-7f-b1c" firstAttribute="top" secondItem="cNT-O1-mO2" secondAttribute="top" id="ZaJ-RU-jRc"/>
                 <constraint firstAttribute="bottom" secondItem="QB8-7f-b1c" secondAttribute="bottom" id="fAG-Rw-JeG"/>
+                <constraint firstItem="7pZ-7H-wx1" firstAttribute="trailing" secondItem="Vws-AB-WVB" secondAttribute="trailing" constant="20" id="spw-so-b1e"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="7pZ-7H-wx1"/>
-            <point key="canvasLocation" x="139" y="153"/>
+            <connections>
+                <outlet property="imageView" destination="QB8-7f-b1c" id="N6p-rw-gkf"/>
+                <outlet property="label" destination="Vws-AB-WVB" id="AdI-p2-mBS"/>
+            </connections>
+            <point key="canvasLocation" x="137.68115942028987" y="152.67857142857142"/>
         </collectionReusableView>
     </objects>
     <resources>

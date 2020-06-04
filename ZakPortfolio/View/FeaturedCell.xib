@@ -9,13 +9,17 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="FeaturedCell" id="BPX-vF-2nm" customClass="FeaturedCell" customModule="ZakPortfolio" customModuleProvider="target">
+        <collectionViewCell opaque="NO" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="FeaturedCell" id="BPX-vF-2nm" customClass="FeaturedCell" customModule="ZakPortfolio" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="203" height="128"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-            <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="eo7-bD-0Ub">
+            <collectionViewCellContentView key="contentView" opaque="NO" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="eo7-bD-0Ub">
                 <rect key="frame" x="0.0" y="0.0" width="203" height="128"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jHa-il-hCU">
+                        <rect key="frame" x="8" y="8" width="187" height="112"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                    </view>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="comingSoon" translatesAutoresizingMaskIntoConstraints="NO" id="Lhf-cU-nfN">
                         <rect key="frame" x="0.0" y="0.0" width="203" height="128"/>
                     </imageView>
@@ -28,7 +32,6 @@
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NYb-TC-e5Q">
                                     <rect key="frame" x="8" y="8" width="187" height="112"/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                                    <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                     <color key="shadowColor" systemColor="quaternaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.17999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
                                 </label>
@@ -40,24 +43,30 @@
                                 <constraint firstAttribute="trailing" secondItem="NYb-TC-e5Q" secondAttribute="trailing" constant="8" id="rPL-Ii-8X9"/>
                             </constraints>
                         </view>
-                        <blurEffect style="regular"/>
+                        <blurEffect style="systemMaterial"/>
                     </visualEffectView>
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="bottom" secondItem="Lhf-cU-nfN" secondAttribute="bottom" id="0HB-0g-wMK"/>
                     <constraint firstAttribute="bottom" secondItem="a3M-gp-EKo" secondAttribute="bottom" id="4fP-c0-049"/>
+                    <constraint firstItem="jHa-il-hCU" firstAttribute="leading" secondItem="eo7-bD-0Ub" secondAttribute="leading" constant="8" id="8Lg-dC-iXm"/>
                     <constraint firstItem="Lhf-cU-nfN" firstAttribute="leading" secondItem="eo7-bD-0Ub" secondAttribute="leading" id="Ahr-cd-CEg"/>
                     <constraint firstItem="Lhf-cU-nfN" firstAttribute="top" secondItem="eo7-bD-0Ub" secondAttribute="top" id="KvM-pA-KGW"/>
                     <constraint firstAttribute="trailing" secondItem="a3M-gp-EKo" secondAttribute="trailing" id="M15-3T-PhQ"/>
                     <constraint firstAttribute="trailing" secondItem="Lhf-cU-nfN" secondAttribute="trailing" id="PxX-vL-et4"/>
                     <constraint firstItem="a3M-gp-EKo" firstAttribute="top" secondItem="eo7-bD-0Ub" secondAttribute="top" id="Rf1-1t-b3y"/>
+                    <constraint firstAttribute="trailing" secondItem="jHa-il-hCU" secondAttribute="trailing" constant="8" id="aOE-Kd-3Sq"/>
                     <constraint firstItem="a3M-gp-EKo" firstAttribute="leading" secondItem="eo7-bD-0Ub" secondAttribute="leading" id="dF6-ng-TtS"/>
+                    <constraint firstItem="jHa-il-hCU" firstAttribute="top" secondItem="eo7-bD-0Ub" secondAttribute="top" constant="8" id="ngB-0M-ZBi"/>
+                    <constraint firstAttribute="bottom" secondItem="jHa-il-hCU" secondAttribute="bottom" constant="8" id="nsA-CF-61t"/>
                 </constraints>
             </collectionViewCellContentView>
             <size key="customSize" width="203" height="128"/>
             <connections>
                 <outlet property="imageView" destination="Lhf-cU-nfN" id="UvD-Cj-hee"/>
+                <outlet property="shadowView" destination="jHa-il-hCU" id="2Ye-8B-64e"/>
                 <outlet property="titleLabel" destination="NYb-TC-e5Q" id="zDl-NB-A4f"/>
+                <outlet property="visualEffectView" destination="a3M-gp-EKo" id="4AZ-Bn-RwY"/>
             </connections>
             <point key="canvasLocation" x="138" y="153"/>
         </collectionViewCell>

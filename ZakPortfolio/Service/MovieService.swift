@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// Used to fetch movies from iTunes.
 class MovieService {
 	/// All the movies returned by iTunes.
 	///
@@ -19,26 +20,18 @@ class MovieService {
 			// in case iTunes returns less than 100 titles.
 			var i = 0
 			while i < movies.count {
-				if i < 10 {
+				if i < 5 {
 					featured.append(movies[i])
-				} else if i < 20 {
+				} else if i < 25 {
 					popular.append(movies[i])
-				} else if i < 30 {
+				} else if i < 45 {
 					new.append(movies[i])
-				} else if i < 40 {
+				} else if i < 65 {
 					group1.append(movies[i])
-				} else if i < 50 {
+				} else if i < 85 {
 					group2.append(movies[i])
-				} else if i < 60 {
-					group3.append(movies[i])
-				} else if i < 70 {
-					group4.append(movies[i])
-				} else if i < 80 {
-					group5.append(movies[i])
-				} else if i < 90 {
-					group6.append(movies[i])
 				} else if i < 100 {
-					group7.append(movies[i])
+					group3.append(movies[i])
 				}
 				
 				// Incremnt
@@ -53,13 +46,9 @@ class MovieService {
 	var group1: [Movie] = []
 	var group2: [Movie] = []
 	var group3: [Movie] = []
-	var group4: [Movie] = []
-	var group5: [Movie] = []
-	var group6: [Movie] = []
-	var group7: [Movie] = []
 		
 	/// Loads the top 100 movies from itunes.
-	func loadData(completion: @escaping (() -> ())) {
+	func loadData(completion: @escaping ((_ success: Bool) -> ())) {
 		guard let url = URL(string: "https://rss.itunes.apple.com/api/v1/us/movies/top-movies/all/100/explicit.json") else { return }
 		
 		// Create a request. Use cached data if we can. If not, this should not take longer than 30 seconds.
@@ -77,7 +66,7 @@ class MovieService {
 				httpResponse.statusCode == 200,
 				let json = data
 			else {
-				// TODO: error handling... bubble up to UI?
+				completion(false)
 				return
 			}
 			
@@ -88,10 +77,11 @@ class MovieService {
 				// Set our movie values
 				self.movies = feedRoot.feed.results
 				
-				completion()
+				// Call completion
+				completion(true)
 
 			} catch {
-				completion()
+				completion(false)
 				return
 			}
 		}.resume()
