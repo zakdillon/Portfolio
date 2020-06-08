@@ -3,7 +3,7 @@
 //  ZakPortfolio
 //
 //  Created by Zachary Dillon on 6/3/20.
-//  Copyright © 2020 Midwest Tape, LLC. All rights reserved.
+//  Copyright © 2020 Zak Dillon. All rights reserved.
 //
 
 import UIKit

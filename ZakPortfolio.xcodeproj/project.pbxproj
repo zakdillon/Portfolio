@@ -168,7 +168,7 @@
 			attributes = {
 				LastSwiftUpdateCheck = 1150;
 				LastUpgradeCheck = 1150;
-				ORGANIZATIONNAME = "Midwest Tape, LLC";
+				ORGANIZATIONNAME = "Zak Dillon";
 				TargetAttributes = {
 					3320AC1124881861007A2EE0 = {
 						CreatedOnToolsVersion = 11.5;
